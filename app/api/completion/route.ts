@@ -13,7 +13,7 @@ export async function POST(req: Request) {
         }
 
         const result = await generateText({
-            model: anthropic("claude-3-5-sonnet-20240620"),
+            model: anthropic("claude-sonnet-4-5-20250929"),
             prompt,
         });
 
