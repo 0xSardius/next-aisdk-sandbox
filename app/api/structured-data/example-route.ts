@@ -5,7 +5,7 @@ import { recipeSchema } from "./schema";
 
 export async function POST(req: Request) {
   const { prompt } = await req.json();
-  
+
   const result = await generateObject({
     model: anthropic("claude-sonnet-4-5-20250929"),
     schema: recipeSchema, // ← Zod schema, NOT a TypeScript type!
@@ -34,4 +34,3 @@ const result = await generateObject({
   prompt: "...",
 });
 */
-
