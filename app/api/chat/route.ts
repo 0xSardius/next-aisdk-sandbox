@@ -17,7 +17,34 @@ export async function POST(req: Request) {
 
     const result = streamText({
       model,
-      messages: convertToModelMessages(messages),
+      // system example
+      // messages: [
+      //   {
+      //     role: "system",
+      //     // Note our content gives a role, provides guidance to the model, and a
+      //     content:
+      //       "You are a helpful coding assistant. Keep responses under 3 sentences, and focus on practical examples",
+      //   },
+      //   ...convertToModelMessages(messages),
+      // ],
+      // Few Shot learning example
+      messages: [
+        {
+          role: "system",
+          // Note our content gives a role, provides guidance to the model, and a focus on practical examples
+          content: "Convert user questions about react into code examples",
+        },
+        {
+          role: "user",
+          content: "How do I create a new component in React?",
+        },
+        {
+          role: "assistant",
+          content:
+            "Here's a simple example of how to create a new component in React:",
+        },
+        ...convertToModelMessages(messages),
+      ],
     });
 
     return result.toUIMessageStreamResponse();
