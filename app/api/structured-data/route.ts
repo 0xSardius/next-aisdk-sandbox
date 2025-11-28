@@ -16,9 +16,6 @@ export async function POST(req: Request) {
     return result.toTextStreamResponse();
   } catch (error) {
     console.error("Error generating recipe:", error);
-    return Response.json(
-      { error: "Failed to generate recipe" },
-      { status: 500 }
-    );
+    return new Response("Failed to generate recipe", { status: 500 });
   }
 }
