@@ -35,6 +35,17 @@ export default function StructuredDataPage() {
               </div>
             </div>
           )}
+
+          {object?.recipe?.steps && (
+            <div>
+              <h3>Steps</h3>
+              <ol>
+                {object.recipe.steps.map((step, index) => (
+                  <li key={index}>{step}</li>
+                ))}
+              </ol>
+            </div>
+          )}
         </div>
       )}
 
