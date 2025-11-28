@@ -8,7 +8,7 @@ export async function POST(req: Request) {
   const model = anthropic("claude-sonnet-4-5-20250929");
 
   try {
-    const result = await streamObject({
+    const result = streamObject({
       model,
       schema: recipeSchema,
       prompt: `Generate a recipe for ${dish}`,

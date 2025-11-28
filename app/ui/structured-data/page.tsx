@@ -6,7 +6,7 @@ import { recipeSchema } from "@/app/api/structured-data/schema";
 
 export default function StructuredDataPage() {
   const [dishName, setDishName] = useState("");
-  const { submit, object } = useObject({
+  const { submit, object, isLoading, error, stop } = useObject({
     api: "/api/structured-data",
     schema: recipeSchema,
   });
@@ -19,17 +19,25 @@ export default function StructuredDataPage() {
 
   return (
     <div className="flex flex-col w-full max-w-2xl pt-12 pb-24 mx-auto">
+      {error && (
+        <div className="text-red-500 mb-4 px-4">Error: {error.message}</div>
+      )}
       {object?.recipe && (
         <div className="space-y-6 px-4">
           <h2 className="text-2xl font-bold">{object.recipe.name}</h2>
           {object?.recipe?.ingredients && (
             <div>
-              <h3>Ingredients</h3>
-              <div>
-                {object?.recipe?.ingredients.map((ingredient, index) => (
-                  <div key={index}>
-                    <p>{ingredient?.name}</p>
-                    <p>{ingredient?.amount}</p>
+              <h3 className="text-xl font-semibold mb-4">Ingredients</h3>
+              <div className="grid grid-cols-2 gap-4">
+                {object.recipe.ingredients.map((ingredient, index) => (
+                  <div
+                    key={index}
+                    className="bg-zinc-50 dark:bg-zinc-800 rounded-lg p-4"
+                  >
+                    <p className="font-medium">{ingredient?.name}</p>
+                    <p className="text-zinc-600 dark:text-zinc-400">
+                      {ingredient?.amount}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -38,10 +46,16 @@ export default function StructuredDataPage() {
 
           {object?.recipe?.steps && (
             <div>
-              <h3>Steps</h3>
-              <ol>
+              <h3 className="text-xl font-semibold mb-4">Steps</h3>
+              <ol className="space-y-4">
                 {object.recipe.steps.map((step, index) => (
-                  <li key={index}>{step}</li>
+                  <li
+                    key={index}
+                    className="bg-zinc-50 dark:bg-zinc-800 rounded-lg p-4"
+                  >
+                    <span className="font-medium mr-2`">{index + 1}.</span>
+                    {step}
+                  </li>
                 ))}
               </ol>
             </div>
@@ -61,12 +75,23 @@ export default function StructuredDataPage() {
             value={dishName}
             onChange={(e) => setDishName(e.target.value)}
           />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
-          >
-            Generate Recipe
-          </button>
+          {isLoading ? (
+            <button
+              type="button"
+              className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
+              onClick={stop}
+            >
+              Stop
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              disabled={!dishName}
+            >
+              Generate Recipe
+            </button>
+          )}
         </div>
       </form>
     </div>
